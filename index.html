@@ -230,29 +230,7 @@
         }
 
         .next-btn {
-            background: linear-gradient(135deg, #48bb78, #38a169);
-            color: white;
-            border: none;
-            padding: 18px 45px;
-            border-radius: 12px;
-            font-size: 1.2em;
-            cursor: pointer;
-            margin-top: 30px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 600;
-            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
-        }
-
-        .next-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(72, 187, 120, 0.4);
-        }
-
-        .next-btn:disabled {
-            background: #cbd5e0;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+            display: none; /* 다음 버튼 숨김 */
         }
 
         .result-container {
@@ -407,9 +385,7 @@
                         <button class="answer-btn" data-value="1">매우 그렇지 않다</button>
                     </div>
                 </div>
-                <button class="next-btn" id="next-btn" onclick="nextQuestion()" disabled>
-                    다음 질문
-                </button>
+
             </div>
 
             <!-- 결과 화면 -->
@@ -469,7 +445,6 @@
             const questionText = document.getElementById('question-text');
             const currentQuestionSpan = document.getElementById('current-question');
             const progress = document.getElementById('progress');
-            const nextBtn = document.getElementById('next-btn');
             
             questionText.textContent = questionsData[currentQuestionIndex][0];
             currentQuestionSpan.textContent = currentQuestionIndex + 1;
@@ -479,11 +454,6 @@
             selectedAnswer = null;
             const answerBtns = document.querySelectorAll('.answer-btn');
             answerBtns.forEach(btn => btn.classList.remove('selected'));
-            nextBtn.disabled = true;
-            
-            if (currentQuestionIndex === questionsData.length - 1) {
-                nextBtn.textContent = '결과 보기';
-            }
             
             adjustIframeHeight();
         }
@@ -496,7 +466,10 @@
             const selectedBtn = event.target;
             selectedBtn.classList.add('selected');
             
-            document.getElementById('next-btn').disabled = false;
+            // 잠깐 기다린 후 자동으로 다음 질문으로 이동
+            setTimeout(() => {
+                nextQuestion();
+            }, 500);
         }
 
         function nextQuestion() {
